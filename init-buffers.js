@@ -18,13 +18,21 @@ function initPositionBuffer(gl) {
 
   // Now create an array of positions for the square.
   const positions = [
-    1.0, 1.0,
-    -0.9, 1.0,
-    1.0, -.90,
-    
-    -1.0, 0.9,
-    .90, -1.0,
-    -1.0, -1.0
+    1.0, 1.0, -6.0,
+    -0.9, 1.0, -6.0,
+    1.0, -.90, -6.0,
+
+    -1.0, 0.9, -6.0,
+    .90, -1.0, -6.0,
+    -1.0, -1.0, -6.0,
+
+    1.0, 1.0, 6.0,
+    -0.9, 1.0, 6.0,
+    1.0, -.90, 6.0,
+
+    -1.0, 0.9, 6.0,
+    .90, -1.0, 6.0,
+    -1.0, -1.0, 6.0,
   ];
 
   // Now pass the list of positions into WebGL to build the
@@ -61,6 +69,30 @@ function initColorBuffer(gl) {
     0.50,
     0.50,
     1.0, // türkis
+    1.0,
+    0.0,
+    0.0,
+    1.0, // red
+    1.0,
+    0.0,
+    0.0,
+    1.0, // red
+    1.0,
+    0.0,
+    0.0,
+    1.0, // red
+    1.0,
+    0.0,
+    0.0,
+    1.0, // red
+    1.0,
+    0.0,
+    0.0,
+    1.0, // red
+    1.0,
+    0.0,
+    0.0,
+    1.0, // red
   ];
 
   const colorBuffer = gl.createBuffer();
