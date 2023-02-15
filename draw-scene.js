@@ -34,25 +34,34 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
   mat4.translate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to translate
-    [-0.0, 0.0, 0]
+    [-0.0, 0.0, -5]
   ); // amount to translate
   mat4.rotate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to rotate
-    squareRotation, // amount to rotate in radians
+    squareRotation/2, // amount to rotate in radians
     [0, 0, 1]
   ); // axis to rotate around
   mat4.rotate(
     modelViewMatrix, // destination matrix
     modelViewMatrix, // matrix to rotate
-    squareRotation/2, // amount to rotate in radians
+    squareRotation/3, // amount to rotate in radians
     [0, 1, 0]
+  ); // axis to rotate around
+  mat4.rotate(
+    modelViewMatrix, // destination matrix
+    modelViewMatrix, // matrix to rotate
+    squareRotation/5, // amount to rotate in radians
+    [1, 0, 0]
   ); // axis to rotate around
 
   // Tell WebGL how to pull out the positions from the position
   // buffer into the vertexPosition attribute.
   setPositionAttribute(gl, buffers, programInfo);
   setColorAttribute(gl, buffers, programInfo);
+
+  // Tell WebGL which indices to use to index the vertices
+  gl.bindBuffer(gl.ELEMENT_ARRAY_BUFFER, buffers.indices);
 
   // Tell WebGL to use our program when drawing
   gl.useProgram(programInfo.program);
@@ -70,11 +79,11 @@ function drawScene(gl, programInfo, buffers, squareRotation) {
   );
 
   {
+    const vertexCount = 36;
+    const type = gl.UNSIGNED_SHORT;
     const offset = 0;
-    const vertexCount = 12;
-    // gl.drawArrays(gl.TRIANGLE_STRIP, offset, vertexCount);
-    gl.drawArrays(gl.TRIANGLES, offset, vertexCount);
-  }
+    gl.drawElements(gl.TRIANGLES, vertexCount, type, offset);
+  }  
 }
 
 // Tell WebGL how to pull out the positions from the position
