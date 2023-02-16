@@ -2,10 +2,14 @@ function initBuffers(gl) {
   const positionBuffer = initPositionBuffer(gl);
   const colorBuffer = initColorBuffer(gl);
   const indexBuffer = initIndexBuffer(gl);
+  const textureCoordBuffer = initTextureBuffer(gl);
+  const normalBuffer = initNormalBuffer(gl);
 
   return {
     position: positionBuffer,
     color: colorBuffer,
+    // normal: normalBuffer,
+    // textureCoord: textureCoordBuffer,
     indices: indexBuffer,
   };
 }
@@ -20,23 +24,14 @@ function initPositionBuffer(gl) {
 
   // Now create an array of positions for the square.
   const positions = [
-    // Front face
-    -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0, 1.0,
-  
-    // Back face
-    -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0, -1.0,
-  
-    // Top face
-    -1.0, 1.0, -1.0, -1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, -1.0,
-  
-    // Bottom face
-    -1.0, -1.0, -1.0, 1.0, -1.0, -1.0, 1.0, -1.0, 1.0, -1.0, -1.0, 1.0,
-  
-    // Right face
-    1.0, -1.0, -1.0, 1.0, 1.0, -1.0, 1.0, 1.0, 1.0, 1.0, -1.0, 1.0,
-  
-    // Left face
-    -1.0, -1.0, -1.0, -1.0, -1.0, 1.0, -1.0, 1.0, 1.0, -1.0, 1.0, -1.0,
+    -1.0, -1.0, -1.0,
+    -1.0, -1.0,  1.0,
+    -1.0,  1.0, -1.0,
+    -1.0,  1.0,  1.0,
+     1.0, -1.0, -1.0,
+     1.0, -1.0,  1.0,
+     1.0,  1.0, -1.0,
+     1.0,  1.0,  1.0,
   ];
   
   // Now pass the list of positions into WebGL to build the
@@ -48,24 +43,35 @@ function initPositionBuffer(gl) {
 }
 
 function initColorBuffer(gl) {
-  const faceColors = [
-    [1.0, 1.0, 1.0, 1.0], // Front face: white
-    [1.0, 0.0, 0.0, 1.0], // Back face: red
-    [0.0, 1.0, 0.0, 1.0], // Top face: green
-    [0.0, 0.0, 1.0, 1.0], // Bottom face: blue
-    [1.0, 1.0, 0.0, 1.0], // Right face: yellow
-    [1.0, 0.0, 1.0, 1.0], // Left face: purple
-  ];
+  // const faceColors = [
+  //   [1.0, 1.0, 1.0, 1.0], // Front face: white
+  //   [1.0, 0.0, 0.0, 1.0], // Back face: red
+  //   [0.0, 1.0, 0.0, 1.0], // Top face: green
+  //   [0.0, 0.0, 1.0, 1.0], // Bottom face: blue
+  //   [1.0, 1.0, 0.0, 1.0], // Right face: yellow
+  //   [1.0, 0.0, 1.0, 1.0], // Left face: purple
+  // ];
   
   // Convert the array of colors into a table for all the vertices.
   
-  var colors = [];
+  // var colors = [];
   
-  for (var j = 0; j < faceColors.length; ++j) {
-    const c = faceColors[j];
-    // Repeat each color four times for the four vertices of the face
-    colors = colors.concat(c, c, c, c);
-  }
+  // for (var j = 0; j < faceColors.length; ++j) {
+    //   const c = faceColors[j];
+    //   // Repeat each color four times for the four vertices of the face
+    //   colors = colors.concat(c, c, c, c);
+    // }
+
+  var colors = [
+    1.0, 0.0, 0.0, 1.0,
+    0.0, 1.0, 0.0, 1.0,
+    0.0, 0.0, 1.0, 1.0,
+    1.0, 1.0, 0.0, 1.0,
+    1.0, 0.0, 1.0, 1.0,
+    0.0, 1.0, 1.0, 1.0,
+    0.0, 0.0, 0.0, 1.0,
+    1.0, 1.0, 1.0, 1.0,
+  ];
   
   const colorBuffer = gl.createBuffer();
   gl.bindBuffer(gl.ARRAY_BUFFER, colorBuffer);
@@ -83,42 +89,42 @@ function initIndexBuffer(gl) {
   // position.
 
   const indices = [
+    1,
+    3,
+    5,
+    3,
+    5,
+    7, // front
+    0,
+    2,
+    4,
+    2,
+    4,
+    6, // back
+    2,
+    3,
+    6,
+    3,
+    6,
+    7, // top
     0,
     1,
-    2,
-    0,
-    2,
-    3, // front
+    4,
+    1,
+    4,
+    5, // bottom
     4,
     5,
     6,
-    4,
+    5,
     6,
-    7, // back
-    8,
-    9,
-    10,
-    8,
-    10,
-    11, // top
-    12,
-    13,
-    14,
-    12,
-    14,
-    15, // bottom
-    16,
-    17,
-    18,
-    16,
-    18,
-    19, // right
-    20,
-    21,
-    22,
-    20,
-    22,
-    23, // left
+    7, // right
+    0,
+    1,
+    2,
+    1,
+    2,
+    3, // left
   ];
 
   // Now send the element array to GL
@@ -130,6 +136,64 @@ function initIndexBuffer(gl) {
   );
 
   return indexBuffer;
+}
+
+function initTextureBuffer(gl) {
+  const textureCoordBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, textureCoordBuffer);
+
+  const textureCoordinates = [
+    0.0, 0.0,
+    1.0, 0.0,
+    0.0, 1.0,
+    1.0, 1.0,
+
+    1.0, 1.0,
+    0.0, 1.0,
+    1.0, 0.0,
+    0.0, 0.0,
+  ];
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array(textureCoordinates),
+    gl.STATIC_DRAW
+  );
+
+  return textureCoordBuffer;
+}
+
+function initNormalBuffer(gl) {
+  const normalBuffer = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, normalBuffer);
+
+  const vertexNormals = [
+    // Front
+    0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0,
+
+    // Back
+    0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0,
+
+    // Top
+    0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0,
+
+    // Bottom
+    0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0,
+
+    // Right
+    1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0, 1.0, 0.0, 0.0,
+
+    // Left
+    -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0, -1.0, 0.0, 0.0,
+  ];
+
+  gl.bufferData(
+    gl.ARRAY_BUFFER,
+    new Float32Array(vertexNormals),
+    gl.STATIC_DRAW
+  );
+
+  return normalBuffer;
 }
 
 export { initBuffers };
